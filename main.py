@@ -56,9 +56,7 @@ class Translator:
                     self.webcam.send(img)
                     self.webcam.sleep_until_next_frame()
 
-                cv2.getWindowProperty('anime', 0)
-
-            except (KeyboardInterrupt, cv2.error):
+            except KeyboardInterrupt:
                 break
 
     # 翻译数据
@@ -80,8 +78,8 @@ class Translator:
         numpy_img = np.uint8(np.rint(convert_output_image_from_torch_to_numpy(output_img) * 255.0))[:, :, :3]
         # numpy_img = cv2.cvtColor(cv2.flip(numpy_img, 1), cv2.COLOR_BGR2RGB)
 
-        cv2.imshow('anime', numpy_img)
-        cv2.waitKey(1)
+        # cv2.imshow('anime', numpy_img)
+        # cv2.waitKey(1)
 
         return numpy_img
 
@@ -112,11 +110,15 @@ class Translator:
             self.webcam = pv.Camera(width=256, height=256, fps=20, device='VirtualCamera')
         except RuntimeError:
             os.system('.\\vc\\Install.bat')
+            error_n = 0
             while True:
                 try:
                     self.webcam = pv.Camera(width=256, height=256, fps=20, device='VirtualCamera')
                     break
                 except RuntimeError:
+                    error_n += 1
+                    if error_n > 5:
+                        raise RuntimeError('Fail to install webcam')
                     sleep(1)
 
 

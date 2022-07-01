@@ -2,8 +2,7 @@
 
 ## 目标
 
-根据用户的面部动作生成同步的虚拟形象，并生成虚拟摄像头，可以使用web端或其他视频软件调取。
-目前仅为初步设计，在视频效果、帧率、硬件资源消耗等各方面有所欠缺，将在后续逐步改进完善。
+根据用户的面部动作生成同步的虚拟形象，并生成虚拟摄像头。目前仅为初步设计，在视频效果、帧率、硬件资源消耗等各方面有所欠缺，将在后续逐步改进完善。
 
 ## 算法思路
 
@@ -24,12 +23,18 @@
 
 **软件集成**：最终使用pyinstaller打包为可执行文件供web端调用，后续也可以采用wxpython或opencv增加图形界面以支持客户端的其他功能。
 
-## 使用方法
-启动程序后，会自动创建名为VirtualCamera
-
 ## 模型
-神经网络模型文件下载地址：[anime-model](https://jbox.sjtu.edu.cn/l/31zMzF) （交大云盘）\
-将解压后的data文件夹直接放在mediapipe-anime文件夹下
+神经网络模型文件下载地址：[anime-model](https://jbox.sjtu.edu.cn/l/31zMzF) （交大云盘）
+
+## 使用方法
+启动程序后，会自动创建名为VirtualCamera的虚拟摄像头，若视频仍无法正常显示，需要手动运行`/vc/Install.bat`，运行成功后可在web端或其他视频软件调用。
+
+若直接运行此项目，将模型文件的文件夹data直接放在项目文件夹下。
+也可通过`pyinstaller`打包为可执行项目包：
+```angular2html
+pip install pyinstaller
+pyinstaller -D -w -n "mediapipe-anime" main.py
+```
 
 ## 硬件要求
 `talking-head-anime-2-demo`项目所给的硬件配置建议：Nvidia RTX 2080，RTX 3080 or better \
@@ -47,3 +52,5 @@
 * opencv-python >= 4.6.0.66 
 * mediapipe >= 0.8.10.1 
 * pyvirtualcam >= 0.9.1
+
+建议使用conda+pip配置环境
