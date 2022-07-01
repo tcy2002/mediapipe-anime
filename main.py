@@ -4,7 +4,7 @@ import cv2
 import torch
 import pyvirtualcam as pv
 import os
-
+from time import sleep
 
 from tha2.poser.modes import mode_20
 from tha2.util import resize_PIL_image, \
@@ -34,7 +34,6 @@ class Translator:
         self.source_img = extract_pytorch_image_from_PIL_image(pil_img).to(self.cuda)
 
         self.cam = cv2.VideoCapture(0)
-        self.webcam = pv.Camera(width=256, height=256, fps=20, device='VirtualCamera')
         self.install_webcam()
 
     def __del__(self):
@@ -52,17 +51,18 @@ class Translator:
                     continue
 
                 landmarks = self.process_img(img)
-                img = self.send_to_anime(landmarks)
-                self.webcam.send(img)
-                self.webcam.sleep_until_next_frame()
+                if len(landmarks) != 0:
+                    img = self.translate_to_anime(landmarks)
+                    self.webcam.send(img)
+                    self.webcam.sleep_until_next_frame()
 
                 cv2.getWindowProperty('anime', 0)
 
             except (KeyboardInterrupt, cv2.error):
                 break
 
-    # 翻译数据并发至amine
-    def send_to_anime(self, landmarks):
+    # 翻译数据
+    def translate_to_anime(self, landmarks):
         if len(landmarks) == 0:
             return
 
@@ -108,29 +108,16 @@ class Translator:
 
     # 创建/获取虚拟摄像头
     def install_webcam(self):
-        webcam = self.get_webcam_id()
-        if webcam == -1:
-            cmd = '.\\vc\\Install.bat'
-            os.system(cmd)
-            webcam = self.get_webcam_id()
-
-        if webcam == -1:
-            raise RuntimeError('Fail to install webcam!')
-
-    # 获取虚拟摄像头id
-    def get_webcam_id(self):
-        detector = '.\\vc\\ReadCameraInfo.exe'
-        rs = os.popen(detector)
-        a = rs.read()
-        sa = a.split('\n')
-
-        for line in sa:
-            if len(line) >= 7:
-                camera = line[7:].split(":")
-                if camera[1] == 'VirtualCamera':
-                    return camera[0]
-
-        return -1
+        try:
+            self.webcam = pv.Camera(width=256, height=256, fps=20, device='VirtualCamera')
+        except RuntimeError:
+            os.system('.\\vc\\Install.bat')
+            while True:
+                try:
+                    self.webcam = pv.Camera(width=256, height=256, fps=20, device='VirtualCamera')
+                    break
+                except RuntimeError:
+                    sleep(1)
 
 
 if __name__ == '__main__':
