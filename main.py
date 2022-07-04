@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 import torch
 import pyvirtualcam as pv
-import os
+from os import system
 from time import sleep
 
 from tha2.poser.modes import mode_20
@@ -109,7 +109,7 @@ class Translator:
         try:
             self.webcam = pv.Camera(width=256, height=256, fps=20, device='VirtualCamera')
         except RuntimeError:
-            os.system('.\\vc\\Install.bat')
+            system('.\\vc\\Install.bat')
             error_n = 0
             while True:
                 try:

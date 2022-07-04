@@ -19,7 +19,7 @@ class PoserEncoderDecoder00Args(PoserArgs00):
                  image_size: int,
                  input_image_channels: int,
                  output_image_channels: int,
-                 num_pose_params: int ,
+                 num_pose_params: int,
                  start_channels: int,
                  bottleneck_image_size,
                  num_bottleneck_blocks,

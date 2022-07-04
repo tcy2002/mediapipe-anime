@@ -35,7 +35,7 @@
 pip install pyinstaller
 pyinstaller -D -w -n "mediapipe-anime" main.py
 ```
-然后将文件夹vc、data复制到程序文件夹下
+然后将文件夹vc、data复制到程序文件夹下。由于打包完成的可执行项目大小过大（4G），因此不便在代码仓库中备份
 
 ## 硬件要求
 `talking-head-anime-2-demo`项目所给的硬件配置建议：Nvidia RTX 2080，RTX 3080 or better \
