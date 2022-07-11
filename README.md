@@ -31,11 +31,12 @@
 
 若直接运行此项目，将模型文件的文件夹data直接放在项目文件夹下。
 也可通过`pyinstaller`打包为可执行项目包：
-```angular2html
+```
 pip install pyinstaller
 pyinstaller -D -w -n "mediapipe-anime" main.py
 ```
-然后将文件夹vc、data复制到程序文件夹下。由于打包完成的可执行项目大小过大（4G），因此不便在代码仓库中备份
+然后将文件夹vc、data复制到程序文件夹下。\
+**注**：由于pytorch以及其他依赖库的环境配置过程较为复杂，而且pyinstaller打包完成的可执行项目包过于巨大，因此移植性不太好。而且由于缺失cuda一些dll文件（pyinstaller打包的问题）导致运行打包后的exe始终失败。正在尝试使用live2d或unity3dchan完成。
 
 ## 硬件要求
 `talking-head-anime-2-demo`项目所给的硬件配置建议：Nvidia RTX 2080，RTX 3080 or better \
